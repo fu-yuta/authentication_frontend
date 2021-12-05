@@ -1,3 +1,4 @@
+import 'package:authentication_frontend/requester/requester.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -30,6 +31,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _userNameTextController = TextEditingController();
+  final _passwordNameTextController = TextEditingController();
+  final FocusNode _userNamefocusNode = FocusNode();
+  final FocusNode _passwordNameFocusNode = FocusNode();
+  var _errorMessage = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,18 +47,23 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text(_errorMessage, style: const TextStyle(color: Colors.red)),
             TextField(
+              controller: _userNameTextController,
               decoration: const InputDecoration(
                 filled: true,
                 labelText: 'Username',
               ),
+              focusNode: _userNamefocusNode,
             ),
             const SizedBox(height: 12.0),
             TextField(
+              controller: _passwordNameTextController,
               decoration: const InputDecoration(
                 filled: true,
                 labelText: 'Password',
               ),
+              focusNode: _passwordNameFocusNode,
               obscureText: true,
             ),
             ButtonBar(
@@ -59,12 +71,31 @@ class _LoginPageState extends State<LoginPage> {
                 TextButton(
                   child: const Text('CANCEL'),
                   onPressed: () {
+                    _userNameTextController.clear();
+                    _passwordNameTextController.clear();
                   },
                 ),
                 ElevatedButton(
-                  child: const Text('NEXT'),
-                  onPressed: () {
-                  },
+                    child: const Text('LOGIN'),
+                    onPressed: () {
+                      Requester()
+                          .loginRequester(_userNameTextController.text,
+                              _passwordNameTextController.text)
+                          .then((accessToken) {
+                        debugPrint(accessToken);
+                      }).onError((error, stackTrace) {
+                        debugPrint(error.toString());
+                        debugPrint("ログインに失敗しました。ユーザー名かパスワードが間違っています。");
+                        _userNameTextController.clear();
+                        _passwordNameTextController.clear();
+                        setState(() {
+                          _errorMessage = "ログインに失敗しました。ユーザー名かパスワードが間違っています。";
+                        });
+                      });
+                    }),
+                ElevatedButton(
+                  child: const Text('SIGHNUP'),
+                  onPressed: () {},
                 ),
               ],
             ),
