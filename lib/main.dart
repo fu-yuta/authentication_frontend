@@ -1,3 +1,4 @@
+import 'package:authentication_frontend/hello.dart';
 import 'package:authentication_frontend/requester/requester.dart';
 import 'package:flutter/material.dart';
 
@@ -85,6 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                         setState(() {
                           _errorMessage = "";
                         });
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Hello()));
                       }).onError((error, stackTrace) {
                         debugPrint(error.toString());
                         _userNameTextController.clear();
@@ -98,12 +100,13 @@ class _LoginPageState extends State<LoginPage> {
                     child: const Text('SIGNUP'),
                     onPressed: () {
                       Requester()
-                          .SignUpRequester(_userNameTextController.text,
+                          .signUpRequester(_userNameTextController.text,
                               _passwordNameTextController.text)
                           .then((_) {
                         setState(() {
                           _errorMessage = "";
                         });
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Hello()));
                       }).onError((error, stackTrace) {
                         debugPrint(error.toString());
                         _userNameTextController.clear();
