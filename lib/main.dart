@@ -81,11 +81,12 @@ class _LoginPageState extends State<LoginPage> {
                       Requester()
                           .loginRequester(_userNameTextController.text,
                               _passwordNameTextController.text)
-                          .then((accessToken) {
-                        debugPrint(accessToken);
+                          .then((_) {
+                        setState(() {
+                          _errorMessage = "";
+                        });
                       }).onError((error, stackTrace) {
                         debugPrint(error.toString());
-                        debugPrint("ログインに失敗しました。ユーザー名かパスワードが間違っています。");
                         _userNameTextController.clear();
                         _passwordNameTextController.clear();
                         setState(() {
@@ -94,9 +95,24 @@ class _LoginPageState extends State<LoginPage> {
                       });
                     }),
                 ElevatedButton(
-                  child: const Text('SIGHNUP'),
-                  onPressed: () {},
-                ),
+                    child: const Text('SIGNUP'),
+                    onPressed: () {
+                      Requester()
+                          .SignUpRequester(_userNameTextController.text,
+                              _passwordNameTextController.text)
+                          .then((_) {
+                        setState(() {
+                          _errorMessage = "";
+                        });
+                      }).onError((error, stackTrace) {
+                        debugPrint(error.toString());
+                        _userNameTextController.clear();
+                        _passwordNameTextController.clear();
+                        setState(() {
+                          _errorMessage = "ユーザーの作成に失敗しました。既に登録済みのユーザーです。";
+                        });
+                      });
+                    }),
               ],
             ),
           ],
