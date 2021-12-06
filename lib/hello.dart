@@ -40,9 +40,30 @@ class _HelloState extends State<Hello> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Hello"),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        actions: [
+          TextButton(
+            onPressed: () {
+              Requester().logoutRequester().then((_) {
+                Navigator.pop(context);
+              });
+            },
+            child: const Text('LOGOUT',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0)),
+          ),
+        ],
       ),
-      body: Center(
-        child: Text(_message),
+      body: Padding(
+        padding: EdgeInsets.only(top: 100),
+        child: Center(
+          child: Column(
+            children: [Text(_message, style: TextStyle(fontSize: 50.0))],
+          ),
+        ),
       ),
     );
   }

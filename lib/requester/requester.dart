@@ -1,5 +1,4 @@
-import 'dart:ffi';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -14,7 +13,10 @@ class TokenExipireException implements Exception {
 }
 
 class Requester {
-  String uri = "http://localhost:8080/v1/";
+  String uri = defaultTargetPlatform == TargetPlatform.android
+      ? 'http://10.0.2.2:8080/v1/'
+      : 'http://127.0.0.1:8080/v1/';
+
   Map<String, String> headers = {
     "Content-Type": "application/json",
   };
@@ -74,7 +76,7 @@ class Requester {
       Map<String, dynamic> decoded = json.decode(response.body);
       var helloResponse = HelloResponse.fromJson(decoded);
       return helloResponse.message;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 || response.statusCode == 404) {
       debugPrint("send refreshTokenRequester");
       await refreshTokenRequester();
       var value = await helloRequester();
@@ -103,6 +105,18 @@ class Requester {
       debugPrint(refreshTokenResponse.accessToken);
     } else {
       throw Exception("Token Refresh Error");
+    }
+  }
+
+  Future<void> logoutRequester() async {
+    var logoutUri = uri + "auth/logout";
+    var accessToken = await storage.read(key: "accessToken");
+    headers["Authorization"] = accessToken ?? "";
+
+    final response = await http.post(Uri.parse(logoutUri), headers: headers);
+
+    if (response.statusCode == 201) {
+      await storage.delete(key: "accessToken");
     }
   }
 
