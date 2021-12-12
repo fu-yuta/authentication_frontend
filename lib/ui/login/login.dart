@@ -72,14 +72,12 @@ class LoginPage extends ConsumerWidget {
                 ElevatedButton(
                     child: const Text('LOGIN'),
                     onPressed: () {
-                      Requester()
-                          .loginRequester(_userNameTextController.text,
+                      loginRequest(ref, _userNameTextController.text,
                               _passwordNameTextController.text)
                           .then((_) {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Hello()));
                       }).onError((error, stackTrace) {
-                        debugPrint(error.toString());
                         _userNameTextController.clear();
                         _passwordNameTextController.clear();
                       });
@@ -87,14 +85,12 @@ class LoginPage extends ConsumerWidget {
                 ElevatedButton(
                     child: const Text('SIGNUP'),
                     onPressed: () {
-                      Requester()
-                          .signUpRequester(_userNameTextController.text,
+                      signUpRequest(ref, _userNameTextController.text,
                               _passwordNameTextController.text)
                           .then((_) {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Hello()));
                       }).onError((error, stackTrace) {
-                        debugPrint(error.toString());
                         _userNameTextController.clear();
                         _passwordNameTextController.clear();
                       });
