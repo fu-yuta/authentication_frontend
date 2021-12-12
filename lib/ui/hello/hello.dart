@@ -7,32 +7,32 @@ class Hello extends ConsumerWidget {
 
   var _message = "";
 
-  @override
-  void initState() {
-    super.initState();
-    Requester().helloRequester().then((value) {
-      setState(() {
-        _message = value;
-      });
-    }).onError((error, stackTrace) {
-      showDialog(
-          context: context,
-          builder: (_) {
-            return AlertDialog(
-              title: Text("認証に失敗しました。再ログインをお願いします。"),
-              actions: [
-                TextButton(
-                    onPressed: () => Navigator.pop(context), child: Text("OK")),
-              ],
-            );
-          }).then((_) {
-        Navigator.pop(context);
-      });
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   Requester().helloRequester().then((value) {
+  //     setState(() {
+  //       _message = value;
+  //     });
+  //   }).onError((error, stackTrace) {
+  //     showDialog(
+  //         context: context,
+  //         builder: (_) {
+  //           return AlertDialog(
+  //             title: Text("認証に失敗しました。再ログインをお願いします。"),
+  //             actions: [
+  //               TextButton(
+  //                   onPressed: () => Navigator.pop(context), child: Text("OK")),
+  //             ],
+  //           );
+  //         }).then((_) {
+  //       Navigator.pop(context);
+  //     });
+  //   });
+  // }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Hello"),

@@ -1,5 +1,6 @@
-import 'package:authentication_frontend/ui/hello.dart';
+import 'package:authentication_frontend/ui/hello/hello.dart';
 import 'package:authentication_frontend/requester/requester.dart';
+import 'package:authentication_frontend/ui/login/login_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,10 +29,10 @@ class LoginPage extends ConsumerWidget {
   final _passwordNameTextController = TextEditingController();
   final FocusNode _userNamefocusNode = FocusNode();
   final FocusNode _passwordNameFocusNode = FocusNode();
-  var _errorMessage = "";
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final errorMessage = ref.watch(errorMessageProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -40,7 +41,7 @@ class LoginPage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(_errorMessage, style: const TextStyle(color: Colors.red)),
+            Text(errorMessage, style: const TextStyle(color: Colors.red)),
             TextField(
               controller: _userNameTextController,
               decoration: const InputDecoration(
