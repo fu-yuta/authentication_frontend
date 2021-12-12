@@ -1,14 +1,10 @@
 import 'package:authentication_frontend/requester/requester.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Hello extends StatefulWidget {
-  const Hello({Key? key}) : super(key: key);
+class Hello extends ConsumerWidget {
+  Hello({Key? key}) : super(key: key);
 
-  @override
-  _HelloState createState() => _HelloState();
-}
-
-class _HelloState extends State<Hello> {
   var _message = "";
 
   @override

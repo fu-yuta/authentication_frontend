@@ -1,6 +1,7 @@
 import 'package:authentication_frontend/ui/hello.dart';
 import 'package:authentication_frontend/requester/requester.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LoginApp extends StatelessWidget {
   const LoginApp({Key? key}) : super(key: key);
@@ -13,21 +14,16 @@ class LoginApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(title: 'Login Page'),
+      home: LoginPage(title: 'Login Page'),
     );
   }
 }
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key, required this.title}) : super(key: key);
+class LoginPage extends ConsumerWidget {
+  LoginPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
   final _userNameTextController = TextEditingController();
   final _passwordNameTextController = TextEditingController();
   final FocusNode _userNamefocusNode = FocusNode();
@@ -35,10 +31,10 @@ class _LoginPageState extends State<LoginPage> {
   var _errorMessage = "";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ),
       body: Center(
         child: Column(
@@ -79,18 +75,12 @@ class _LoginPageState extends State<LoginPage> {
                           .loginRequester(_userNameTextController.text,
                               _passwordNameTextController.text)
                           .then((_) {
-                        setState(() {
-                          _errorMessage = "";
-                        });
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Hello()));
                       }).onError((error, stackTrace) {
                         debugPrint(error.toString());
                         _userNameTextController.clear();
                         _passwordNameTextController.clear();
-                        setState(() {
-                          _errorMessage = "ログインに失敗しました。ユーザー名かパスワードが間違っています。";
-                        });
                       });
                     }),
                 ElevatedButton(
@@ -100,18 +90,12 @@ class _LoginPageState extends State<LoginPage> {
                           .signUpRequester(_userNameTextController.text,
                               _passwordNameTextController.text)
                           .then((_) {
-                        setState(() {
-                          _errorMessage = "";
-                        });
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Hello()));
                       }).onError((error, stackTrace) {
                         debugPrint(error.toString());
                         _userNameTextController.clear();
                         _passwordNameTextController.clear();
-                        setState(() {
-                          _errorMessage = "ユーザーの作成に失敗しました。既に登録済みのユーザーです。";
-                        });
                       });
                     }),
               ],
