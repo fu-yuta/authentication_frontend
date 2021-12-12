@@ -1,38 +1,15 @@
 import 'package:authentication_frontend/requester/requester.dart';
+import 'package:authentication_frontend/ui/hello/hello_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Hello extends ConsumerWidget {
   Hello({Key? key}) : super(key: key);
 
-  var _message = "";
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   Requester().helloRequester().then((value) {
-  //     setState(() {
-  //       _message = value;
-  //     });
-  //   }).onError((error, stackTrace) {
-  //     showDialog(
-  //         context: context,
-  //         builder: (_) {
-  //           return AlertDialog(
-  //             title: Text("認証に失敗しました。再ログインをお願いします。"),
-  //             actions: [
-  //               TextButton(
-  //                   onPressed: () => Navigator.pop(context), child: Text("OK")),
-  //             ],
-  //           );
-  //         }).then((_) {
-  //       Navigator.pop(context);
-  //     });
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    debugPrint("build");
+    final messageProvider = ref.watch(helloRequestProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text("Hello"),
@@ -41,7 +18,7 @@ class Hello extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () {
-              Requester().logoutRequester().then((_) {
+              logoutRequest().then((_) {
                 Navigator.pop(context);
               });
             },
@@ -55,9 +32,33 @@ class Hello extends ConsumerWidget {
       ),
       body: Padding(
         padding: EdgeInsets.only(top: 100),
-        child: Center(
-          child: Column(
-            children: [Text(_message, style: TextStyle(fontSize: 50.0))],
+        child: messageProvider.when(
+          data: (message) => Center(
+            child: Column(
+              children: [Text(message, style: TextStyle(fontSize: 50.0))],
+            ),
+          ),
+          error: (error, stackTrace) {
+            Future(() {
+              showDialog(
+                  context: context,
+                  builder: (_) {
+                    return AlertDialog(
+                      title: Text("認証に失敗しました。再ログインをお願いします。"),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text("OK")),
+                      ],
+                    );
+                  }).then((_) {
+                Navigator.pop(context);
+              });
+            });
+          },
+          loading: () => AspectRatio(
+            aspectRatio: 0.01,
+            child: const CircularProgressIndicator(),
           ),
         ),
       ),
