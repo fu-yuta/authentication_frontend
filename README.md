@@ -9,7 +9,7 @@ flutter pub add freezed
 flutter pub add json_serializable
 flutter pub add json_annotation
 ```
-## データクラス作成コマンド
+## アノテーションビルドコマンド
 通常時 
 
 ```

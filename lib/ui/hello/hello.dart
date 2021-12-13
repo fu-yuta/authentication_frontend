@@ -8,7 +8,7 @@ class Hello extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    debugPrint("build");
+    final helloViewModel = HelloViewModel();
     final messageProvider = ref.watch(helloRequestProvider);
     return Scaffold(
       appBar: AppBar(
@@ -18,7 +18,7 @@ class Hello extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () {
-              logoutRequest().then((_) {
+              helloViewModel.logoutRequest().then((_) {
                 Navigator.pop(context);
               });
             },

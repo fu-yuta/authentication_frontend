@@ -28,7 +28,6 @@ class Requester {
 
   Future<void> loginRequester(String name, String password) async {
     var loginUri = uri + "auth/login";
-
     var request = AuthRequest(name: name, password: password);
     debugPrint(json.encode(request.toJson()));
     final response = await http.post(Uri.parse(loginUri),

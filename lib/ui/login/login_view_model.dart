@@ -3,10 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 StateProvider<String> errorMessageProvider = StateProvider((ref) => '');
 
-Future<void> loginRequest(String name, String password) async {
-  return Requester().loginRequester(name, password);
-}
+class LoginViewModel {
+  var requester = Requester();
 
-Future<void> signUpRequest(String name, String password) async {
-  return Requester().signUpRequester(name, password);
+  Future<void> loginRequest(String name, String password) async {
+    return requester.loginRequester(name, password);
+  }
+
+  Future<void> signUpRequest(String name, String password) async {
+    return requester.signUpRequester(name, password);
+  }
 }

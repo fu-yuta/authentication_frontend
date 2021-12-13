@@ -32,6 +32,7 @@ class LoginPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final loginViewModel = LoginViewModel();
     final errorMessage = ref.watch(errorMessageProvider);
     return Scaffold(
       appBar: AppBar(
@@ -72,7 +73,8 @@ class LoginPage extends ConsumerWidget {
                 ElevatedButton(
                     child: const Text('LOGIN'),
                     onPressed: () {
-                      loginRequest(_userNameTextController.text,
+                      loginViewModel
+                          .loginRequest(_userNameTextController.text,
                               _passwordNameTextController.text)
                           .then((_) {
                         Navigator.push(context,
@@ -87,7 +89,8 @@ class LoginPage extends ConsumerWidget {
                 ElevatedButton(
                     child: const Text('SIGNUP'),
                     onPressed: () {
-                      signUpRequest(_userNameTextController.text,
+                      loginViewModel
+                          .signUpRequest(_userNameTextController.text,
                               _passwordNameTextController.text)
                           .then((_) {
                         Navigator.push(context,
