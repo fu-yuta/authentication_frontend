@@ -72,7 +72,7 @@ class LoginPage extends ConsumerWidget {
                 ElevatedButton(
                     child: const Text('LOGIN'),
                     onPressed: () {
-                      loginRequest(ref, _userNameTextController.text,
+                      loginRequest(_userNameTextController.text,
                               _passwordNameTextController.text)
                           .then((_) {
                         Navigator.push(context,
@@ -80,12 +80,14 @@ class LoginPage extends ConsumerWidget {
                       }).onError((error, stackTrace) {
                         _userNameTextController.clear();
                         _passwordNameTextController.clear();
+                        ref.watch(errorMessageProvider.notifier).state =
+                            "ログインに失敗しました";
                       });
                     }),
                 ElevatedButton(
                     child: const Text('SIGNUP'),
                     onPressed: () {
-                      signUpRequest(ref, _userNameTextController.text,
+                      signUpRequest(_userNameTextController.text,
                               _passwordNameTextController.text)
                           .then((_) {
                         Navigator.push(context,
@@ -93,6 +95,8 @@ class LoginPage extends ConsumerWidget {
                       }).onError((error, stackTrace) {
                         _userNameTextController.clear();
                         _passwordNameTextController.clear();
+                        ref.watch(errorMessageProvider.notifier).state =
+                            "サインアップに失敗しました";
                       });
                     }),
               ],
