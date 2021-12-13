@@ -1,3 +1,5 @@
+import 'package:authentication_frontend/data/auth/auth.dart';
+import 'package:authentication_frontend/data/hello/hello.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -28,7 +30,7 @@ class Requester {
     var loginUri = uri + "auth/login";
 
     var request = AuthRequest(name: name, password: password);
-
+    debugPrint(json.encode(request.toJson()));
     final response = await http.post(Uri.parse(loginUri),
         body: json.encode(request.toJson()), headers: headers);
 
@@ -37,7 +39,8 @@ class Requester {
       var loginResponse = AuthResponse.fromJson(decoded);
       debugPrint(loginResponse.accessToken);
       await storage.write(key: "accessToken", value: loginResponse.accessToken);
-      await storage.write(key: "refreshToken", value: loginResponse.refreshToken);
+      await storage.write(
+          key: "refreshToken", value: loginResponse.refreshToken);
     } else {
       throw Exception("Login Error");
     }
@@ -119,48 +122,4 @@ class Requester {
       await storage.delete(key: "accessToken");
     }
   }
-
-
-}
-
-class AuthResponse {
-  final String accessToken;
-  final String refreshToken;
-
-  AuthResponse.fromJson(Map<String, dynamic> json)
-      : accessToken = json['access_token'],
-        refreshToken = json['refresh_token'];
-}
-
-class AuthRequest {
-  final String name;
-  final String password;
-
-  AuthRequest({
-    this.name = "",
-    this.password = "",
-  });
-
-  Map<String, dynamic> toJson() => {
-        'password': password,
-        'user_name': name,
-      };
-}
-
-class HelloResponse {
-  final message;
-
-  HelloResponse.fromJson(Map<String, dynamic> json) : message = json['message'];
-}
-
-class RefreshTokenRequest {
-  final String refreshToken;
-
-  RefreshTokenRequest({
-    this.refreshToken = "",
-  });
-
-  Map<String, dynamic> toJson() => {
-        'refresh_token': refreshToken,
-      };
 }
