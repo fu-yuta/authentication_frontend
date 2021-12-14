@@ -1,4 +1,5 @@
 import 'package:authentication_frontend/requester/requester.dart';
+import 'package:authentication_frontend/ui/hello/hello_view_model.dart';
 import 'package:authentication_frontend/ui/login/login_view_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -58,6 +59,17 @@ void main() {
       } catch (e) {
         expect(e, testExeption);
       }
+    });
+  });
+
+  group("hello view model test", () {
+    test("ログアウト成功", () async {
+      var helloViewModel = HelloViewModel();
+
+      helloViewModel.requester = mock;
+
+      await helloViewModel.logoutRequest();
+      verify(mock.logoutRequester()).called(1);
     });
   });
 }
